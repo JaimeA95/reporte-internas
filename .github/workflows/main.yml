@@ -3,21 +3,23 @@ name: Ejecutar Colab cada hora
 on:
   schedule:
     - cron: '0 * * * *'  # Cada hora
-  workflow_dispatch:     # También permite ejecutarlo manualmente
+  workflow_dispatch:
 
 jobs:
   ejecutar:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Clonar repositorio
+      - name: Clonar el repositorio
         uses: actions/checkout@v3
 
-      - name: Instalar dependencias de Python
+      - name: Instalar dependencias
         run: |
-          python -m pip install --upgrade pip
-          pip install nbconvert gspread gspread_dataframe pandas google-auth-oauthlib
+          sudo apt update
+          sudo apt install -y python3-pip
+          pip install jupyter nbconvert ipykernel gspread oauth2client gspread-dataframe pandas openpyxl
 
       - name: Ejecutar notebook
         run: |
-          jupyter nbconvert --to notebook --execute Reporte_de_internas.ipynb --output ejecutado.ipynb
+          jupyter nbconvert --to notebook --execute Reporte_de_internas.ipynb --output resultado.ipynb
+
