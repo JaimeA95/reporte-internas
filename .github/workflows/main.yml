@@ -1,0 +1,16 @@
+name: Ejecutar Colab cada hora
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # ⏱️ Cada hora en punto (UTC)
+  workflow_dispatch:
+
+jobs:
+  run-colab:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Ejecutar notebook Colab desde GitHub Actions
+        uses: agermanidis/run-colab@v1.0.0
+        with:
+          notebook-path: "https://colab.research.google.com/drive/1-5y-zTm0OAlD0CKUwcmeKNFeilmhmS7WLQHb2Ou0CrY"
