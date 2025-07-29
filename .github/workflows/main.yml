@@ -2,15 +2,22 @@ name: Ejecutar Colab cada hora
 
 on:
   schedule:
-    - cron: '0 * * * *'  # ⏱️ Cada hora en punto (UTC)
-  workflow_dispatch:
+    - cron: '0 * * * *'  # Cada hora
+  workflow_dispatch:     # También permite ejecutarlo manualmente
 
 jobs:
-  run-colab:
+  ejecutar:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Ejecutar notebook Colab desde GitHub Actions
-        uses: agermanidis/run-colab@v1.0.0
-        with:
-          notebook-path: "https://colab.research.google.com/drive/1-5y-zTm0OAlD0CKUwcmeKNFeilmhmS7WLQHb2Ou0CrY"
+      - name: Clonar repositorio
+        uses: actions/checkout@v3
+
+      - name: Instalar dependencias de Python
+        run: |
+          python -m pip install --upgrade pip
+          pip install nbconvert gspread gspread_dataframe pandas google-auth-oauthlib
+
+      - name: Ejecutar notebook
+        run: |
+          jupyter nbconvert --to notebook --execute Reporte_de_internas.ipynb --output ejecutado.ipynb
